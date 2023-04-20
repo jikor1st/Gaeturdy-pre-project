@@ -37,6 +37,22 @@ function App() {
                 variant="required"
                 required={true}
             />
+            <Input
+                id="filled"
+                label="Filled"
+                variant="filled"
+                disabled={true}
+                value="Disabled"
+            // icon="https://cdn-icons-png.flaticon.com/512/2089/2089782.png"
+            />
+            <Input
+                id="filled"
+                label="Filled"
+                variant="filled"
+                readonly={true}
+                value="Readonly"
+            // icon="https://cdn-icons-png.flaticon.com/512/2089/2089782.png"
+            />
         </div>
     );
 }

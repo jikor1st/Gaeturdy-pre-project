@@ -13,7 +13,7 @@ const Container = styled.div`
     margin: 0 auto;
 `;
 
-function InputDemo({ label, maxLength, helper, error, buttons }) {
+function InputDemo({ label, maxLength, helper, error, buttons, icon }) {
     const handleButton = (e) => {
         const targetId = e.target.id;
         if (e.target.checked) {
@@ -29,6 +29,7 @@ function InputDemo({ label, maxLength, helper, error, buttons }) {
                 maxLength={maxLength}
                 helper={helper}
                 error={error}
+                icon={icon}
             />
             <div>
                 {buttons &&

@@ -26,6 +26,14 @@ const Label = styled.label`
     position: relative;
     height: 56px;
     border-bottom: 1px solid black;
+    i {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
 `;
 
 const InputBox = styled.input`
@@ -45,6 +53,20 @@ const LabelText = styled.div`
     transform: translateY(-50%) scale(1);
     transform-origin: left;
     transition: all ease-in-out 0.2s;
+    &.active {
+        top: 0;
+        transform: translateY(-50%) scale(0.9);
+    }
+    .sr-only {
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        border: 0;
+        padding: 0;
+    }
 `;
 
 const Container = styled.div`
@@ -64,12 +86,16 @@ function Input({
     label,
     maxLength,
     icon,
+    iconName,
     Trailing,
     helper,
     error,
     id,
     variant,
     required,
+    disabled,
+    value,
+    readonly
 }) {
     const [inputLength, setInputLength] = useState(0);
 
@@ -84,10 +110,20 @@ function Input({
     }
     let iconComponent;
     if (icon) {
-        iconComponent = <span className="required">*</span>;
+        iconComponent = (
+            <i
+                className="icon"
+                style={{
+                    backgroundImage: `url(${icon})`,
+                }}
+            >
+                <span className="sr-only">{iconName}</span>
+            </i>
+        );
     } else {
         iconComponent = "";
     }
+
     return (
         <Container>
             <InputContainer
@@ -98,29 +134,27 @@ function Input({
                 className={error ? "input-error" : ""}
             >
                 <Label>
-                    <LabelText className="label-text">
-                        {iconComponent}
+                    {iconComponent}
+                    <LabelText className={value || readonly ? "label-text active" : "label-text"}>
                         {label}
                         {requiredComponent}
                     </LabelText>
                     <InputBox
                         id={id}
+                        disabled={disabled}
+                        value={value}
                         onFocus={(el) => {
                             const label = el.target
                                 .closest("label")
                                 .querySelector(".label-text");
-                            label.style.top = 0;
-                            label.style.transform =
-                                "translateY(-50%) scale(0.9)";
+                            label.classList.add("active");
                         }}
                         onBlur={(el) => {
                             if (el.target.value.length <= 0) {
                                 const label = el.target
                                     .closest("label")
                                     .querySelector(".label-text");
-                                label.style.top = "50%";
-                                label.style.transform =
-                                    "translateY(-50%) scale(1)";
+                                label.classList.remove("active");
                             }
                         }}
                         onChange={inputLengthCheck}

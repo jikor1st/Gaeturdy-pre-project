@@ -1,12 +1,14 @@
 import React from 'react';
-import CracoTest from '@/components/CracoTest'
+import GlobalStyles from '@/styles/GlobalStyles';
+import TodoList from '@/components/TodoList';
 import './App.css';
 
 function App() {
   return (
-    <div>
-      <CracoTest></CracoTest>
-    </div>
+    <>
+      <GlobalStyles />
+      <TodoList />
+    </>
   );
 }
 

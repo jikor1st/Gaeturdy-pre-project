@@ -1,5 +1,5 @@
 import React from "react";
-import { FormWrapper, Input, Button } from "@/styles/TodoFormStyle";
+import { FormWrapper, Input, Button } from "@/styles/TodoFormStyles";
 
 const TodoForm = () => {
   return (

@@ -13,6 +13,11 @@ const TodoList = () => {
           <Divider />
           <TodoForm />
           <TodoItem/>
+          <TodoItem/>
+          <TodoItem/>
+          <TodoItem/>
+          <TodoItem/>
+          <TodoItem/>
         </TodoWrapper>
       );
 }

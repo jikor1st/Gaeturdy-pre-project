@@ -7,9 +7,7 @@ export const TodoWrapper = styled.div`
   left: 700px;
   top: 40px;
   background: #FFFFFF;
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-top: 40px;
+  padding: 40px 24px 0px 24px;
 
   @media screen and (max-width: 767px) {
     position: static;

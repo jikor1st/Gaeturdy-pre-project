@@ -1,12 +1,15 @@
 import styled from "styled-components";
 
+export const HomeContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const TodoWrapper = styled.div`
-  position: absolute;
   width: 520px;
   height: 1000px;
-  left: 700px;
-  top: 40px;
-  background: #FFFFFF;
+  background: #ffffff;
   padding: 40px 24px 0px 24px;
 
   @media screen and (max-width: 767px) {
@@ -23,6 +26,6 @@ export const Title = styled.h1`
 export const Divider = styled.div`
   width: 100%;
   height: 1px;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   margin-top: 24px;
 `;

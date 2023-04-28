@@ -1,18 +1,14 @@
 import styled, {css} from "styled-components";
 import checkboxSVG from '@icon/tab-checkbox.svg';
 import delSVG from '@icon/tab-delete.svg';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ListItem } from "@/type/todolisttype";
+import localStorageController from '@/module/localstorage'
 
 interface MyProps {
     placeholder: string;
     btntxt : string;
 }
-
-type ListItem = {
-    id: number;
-    text: string;
-};
-
 
 
 const TabContents = (props:MyProps) => {
@@ -20,8 +16,28 @@ const TabContents = (props:MyProps) => {
     // 변수의 값을 업데이트 하기 위해선 함수가 호출 되어야 함.
 
     const [inputValue, setInputValue] = useState<string>(""); // 문자열 inputValue를 초기값 설정 
-    const [listItems, setListItems] = useState<ListItem[]>([]); // 배열 listItems 초기값 설정
-    const [nextId, setNextId] = useState<number>(1); // 넘버 nextId 초기값 설정
+    // const [listItems, setListItems] = useState<ListItem[]>([]); 
+    // 배열 listItems 초기값 설정\
+    const [listItems, setListItems] = useState<ListItem[]>(() => {
+        if (typeof window !== "undefined") {
+            const saved: ListItem[] | null = localStorageController.getItem('todolist');
+            if (saved !== null) {
+                return saved;
+            } else {
+                return []; // ListItem[] 타입으로 반환합니다.
+            }
+        } else {
+          return []; // ListItem[] 타입으로 반환합니다.
+        }
+    });
+
+    // const [nextId, setNextId] = useState<number>(1); // 넘버 nextId 초기값 설정
+    const [nextId, setNextId] = useState<number>(() => {
+        const maxId = Math.max(...listItems.map((item) => item.id));
+        return maxId > 0 ? maxId + 1 : 1;
+    });
+
+    const [checked] = useState<boolean>(false);
 
     /*
         *input 값이 변경될 때마다 호출되는 함수
@@ -33,11 +49,13 @@ const TabContents = (props:MyProps) => {
         setInputValue(e.target.value);
     };
 
+
+
     // 폼 제출 시 호출되는 함수
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // 폼 제출 기본 동작 막기
 
-        const newItem: ListItem = { id: nextId, text: inputValue };
+        const newItem: ListItem = { id: nextId, text: inputValue, checked : checked };
         // newItem.text가 빈 문자열인 경우 추가하지 않음
         // trim()은 공백을 제거한 값을 반환
         if (!newItem.text.trim()) {
@@ -57,8 +75,27 @@ const TabContents = (props:MyProps) => {
         // listItems에서 id와 일치하는 아이템을 제외한 새로운 배열을 생성
         // item.id !== id 조건을 만족하는 요소만 남겨둠
         setListItems(updatedListItems);
-        // listItem의 배열 상태를 undatedListItems 배열로 없데이트 함
+        // listItem의 배열 상태를 undatedListItems 배열로 업데이트 함
+        localStorageController.removeItem("todolist")
     };
+
+    const onChageChecked = (e:any) => {
+        const id = Number(e.target.value);
+        setListItems(
+            listItems.map((item) =>
+                item.id === id ? { ...item, checked: !item.checked } : item
+            )
+        );
+    }
+
+
+    useEffect(() => {
+        if (listItems?.length === 0) {
+            return;
+        } 
+        localStorageController.setItem("todolist",listItems);
+        setListItems(listItems)
+    }, [listItems]);
 
     return (
         <Container>
@@ -75,20 +112,22 @@ const TabContents = (props:MyProps) => {
                 />
                 <AddButton type="submit">{props.btntxt}</AddButton>
             </InputWrapper>
-            <ContentsWrapper>
-                <ul>
-                    {listItems.map(item => (
-                        <TodoItem  key={item.id}>
-                            <label>
-                                <input type="checkbox" />
-                                <span>
-                                    {item.text}
-                                </span>
-                            </label>
-                            <DelButton onClick={() => handleDeleteButtonClick(item.id)}>삭제</DelButton>
-                        </TodoItem>
-                    ))}
-                </ul>
+            <ContentsWrapper id="todolistwrapper">
+                {listItems.map((item: ListItem) => (
+                    <TodoItem  key={item.id}>
+                        <label>
+                            <input type="checkbox"
+                                onChange={onChageChecked}
+                                checked={item.checked}
+                                value={item.id}
+                            />
+                            <span>
+                                {item.text}
+                            </span>
+                        </label>
+                        <DelButton onClick={() => handleDeleteButtonClick(item.id)}>삭제</DelButton>
+                    </TodoItem>
+                ))}
             </ContentsWrapper>
         </Container>
     );
@@ -159,7 +198,7 @@ export const DelButton = styled.button`
     cursor: pointer;
 `
 
-export const ContentsWrapper = styled.div ` 
+export const ContentsWrapper = styled.ul ` 
     margin-top: 34px;
 
     `

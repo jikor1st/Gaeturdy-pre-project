@@ -18,12 +18,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { TodoItemType } from "@/types/todoList";
 import dayjs from "dayjs";
 
-type TodoListViewType = "all" | "todo" | "complete";
 const HomePage = () => {
   const today = dayjs();
   const navigate = useNavigate();
   const params = useParams<{ view?: "todo" | "complete" }>();
-  const paramsView: TodoListViewType = params.view || "all";
+  const paramsView = params.view || "all";
   const [todoText, setTodoText] = useState("");
   const [todoList, setTodoList] = useState<TodoItemType[]>(
     localStorageController.getItem("todoList") || []

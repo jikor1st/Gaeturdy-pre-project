@@ -4,7 +4,9 @@ import HomePage from "./pages/Home";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/todo-list" element={<HomePage />}>
+        <Route path=":view" />
+      </Route>
     </Routes>
   );
 }

@@ -12,15 +12,17 @@ interface OnTodoSubmitProps {
 const TodoForm = ({ onTodoSubmit }: OnTodoSubmitProps) => {
   // useState('') 를 사용하여 inputValue라는 state를 관리하고 있습니다. 이 state는 입력받은 할 일의 내용을 저장합니다.
   const [inputValue, setInputValue] = useState("");
-
+  // 입력 필드의 아웃라인 색상을 관리할 새로운 상태
+  const [isInputEmpty, setIsInputEmpty] = useState(false);
   // handleSubmit 함수는 할 일을 추가하는 이벤트 핸들러입니다. 입력된 내용이 있으면 상위 컴포넌트로부터 전달받은 onTodoSubmit 함수를 호출하여 할 일을 추가합니다.
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputValue.trim()) {
       onTodoSubmit(inputValue);
       setInputValue("");
+      setIsInputEmpty(false);
     } else {
-      alert("할 일을 작성해주세요");
+      setIsInputEmpty(true);
     }
   };
 
@@ -29,8 +31,14 @@ const TodoForm = ({ onTodoSubmit }: OnTodoSubmitProps) => {
     <FormWrapper onSubmit={handleSubmit}>
       <Input
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          setIsInputEmpty(false);
+        }}
         placeholder="할 일을 추가해주세요"
+        style={{
+          borderColor: isInputEmpty ? "#ff9898" : "#eeeeee",
+        }}
       />
       <Button type="submit">추가</Button>
     </FormWrapper>

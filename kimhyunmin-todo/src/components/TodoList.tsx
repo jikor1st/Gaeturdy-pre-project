@@ -25,7 +25,7 @@ const TodoList = () => {
     return (
       <HomeContainer>
         <TodoWrapper>
-          <Title>2023년 4월 18일</Title>
+          <Title>{Date()}</Title>
           <TodoTabs />
           <Divider />
           <TodoForm onTodoSubmit={addTodo} />

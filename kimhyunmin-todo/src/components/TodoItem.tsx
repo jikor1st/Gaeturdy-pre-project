@@ -28,17 +28,17 @@ const CheckBox = ({
 interface TodoItemProps {
   todo: TodoItemType;
   onRemove: () => void;
+  onChangeChecked: ()=> void;
 }
 
 // TodoItem 컴포넌트는 각각의 할 일 항목을 나타냅니다.
-const TodoItem = ({ todo, onRemove }: TodoItemProps) => {
+const TodoItem = ({ todo, onRemove, onChangeChecked }: TodoItemProps) => {
   // useState(false) 를 사용하여 isChecked 라는 state를 관리하고 있습니다. 이 state는 할 일의 체크 여부를 나타냅니다.
   // JIGI: isChecked 여부를 todo리스트 값에 넣어주기
-  const [isChecked, setIsChecked] = useState(false);
 
   // handleCheck 함수는 체크박스의 상태를 변경하는 이벤트 핸들러입니다. 현재 isChecked 값을 반대로 설정합니다.
   const handleCheck = () => {
-    setIsChecked(!isChecked);
+    onChangeChecked();
   };
 
   // CheckBox 컴포넌트에서 handleCheck 함수를 전달받아 체크박스의 이벤트 핸들러로 설정합니다.
@@ -46,8 +46,8 @@ const TodoItem = ({ todo, onRemove }: TodoItemProps) => {
   // DeleteButton 컴포넌트에서 상위 컴포넌트로부터 전달받은 onRemove 함수를 클릭 이벤트 핸들러로 설정하여 삭제 기능을 구현했습니다.
   return (
     <ItemWrapper>
-      <CheckBox isChecked={isChecked} handleCheck={handleCheck} />
-      <Item isChecked={isChecked}>{todo.title}</Item>
+      <CheckBox isChecked={todo.checked} handleCheck={handleCheck} />
+      <Item isChecked={todo.checked}>{todo.title}</Item>
       <DeleteButton src={deleteIcon} alt="삭제 버튼" onClick={onRemove} />
     </ItemWrapper>
   );

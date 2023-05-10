@@ -9,9 +9,16 @@ import {
   Divider,
 } from "@/styles/TodoListStyles";
 import { TodoItemType } from "@/types/todos";
+import { useParams } from "react-router-dom";
 
+type TodoListParamsType = {
+  view?: "todo" | "complete";
+};
 // TodoList는 프로젝트의 가장 상위 컴포넌트로, 여기서는 Todo 항목을 추가하고 삭제하는 기능을 구현했습니다.
 const TodoList = () => {
+  const params = useParams<TodoListParamsType>();
+  const paramsView = params.view || "all";
+
   // 이 useState에서는 useState<TodoItemType[]>([])를 사용하여 todos라는 state를 관리하고 있습니다. 이 state는 문자열의 배열로 각각의 문자열은 할 일의 내용을 나타냅니다. ([]) 은 'useState'의 인자로 빈 배열을 전달하여 초기 상태값을 설정합니다. 이 상태값은 빈 문자열 배열로 초기화됩니다.
   // JIGI: todos에 checked, 생성 날짜, id값을 넣을 수 있도록 개선하면 좋을 것 같음.
   // JIGI: id값은 uuid 라는 라이브러리를 통해서 설치하면 좋을 것 같음.
@@ -37,6 +44,16 @@ const TodoList = () => {
     setTodos(todos.filter((_, i) => i !== index));
   };
 
+  // filteredTodoList
+  const filteredTodoList = {
+    all: todos,
+    todo: todos.filter((item) => !item.checked),
+    complete: todos.filter((item) => item.checked),
+  };
+
+  const displayTodoList = filteredTodoList[paramsView];
+  console.log("displayTodoList: ", displayTodoList);
+
   // TodoForm 컴포넌트에 onTodoSubmit prop으로 addTodo 함수를 전달합니다. 이를 통해 TodoForm에서 작성된 할 일을 추가할 수 있습니다.
   // todos.map() 을 사용하여 todos 배열에 있는 각 할 일에 대해 TodoItem 컴포넌트를 렌더링합니다. 이때 key, todo, onRemove props 를 전달합니다.
   return (
@@ -52,11 +69,51 @@ const TodoList = () => {
         <TodoTabs />
         <Divider />
         <TodoForm onTodoSubmit={addTodo} />
-        {todos.map((todo, index) => (
+        {displayTodoList.map((todo, index) => (
           <TodoItem
             key={index}
             todo={todo}
             onRemove={() => removeTodo(index)}
+            onChangeChecked={() => {
+              // 방법.1
+              // const copyTodoList = [...todos];
+
+              // const findIndex = copyTodoList.findIndex((item)=>item.id === todo.id);
+
+              // copyTodoList.splice(findIndex,1, {
+              //   id:todo.id,
+              //   title:todo.title,
+              //   createdAt:todo.createdAt,
+              //   checked:!todo.checked
+              // });
+
+              // setTodos(copyTodoList)
+
+              // 방법.2
+              // const changedTodo = todos.map((item)=>{
+              //   if(item.id === todo.id){
+              //     return {
+              //       ...item,
+              //       checked:!item.checked,
+              //     }
+              //   }
+
+              //   return item;
+              // })
+              // setTodos(changedTodo)
+
+              setTodos((prevState) =>
+                prevState.map((item) => {
+                  if (item.id === todo.id) {
+                    return {
+                      ...item,
+                      checked: !item.checked,
+                    };
+                  }
+                  return item;
+                })
+              );
+            }}
           />
         ))}
       </TodoWrapper>

@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from "react";
 import * as icons from "./svgr";
 import { CSSProperties } from "styled-components";
-
+import styled, { css } from "styled-components";
 export const IconNames = Object.keys(icons) as IconType[];
 
 export type IconType = keyof typeof icons;
@@ -23,3 +23,12 @@ function Icon({ icon, ...props }: IconProps) {
 }
 
 export default Icon;
+
+const theme = {
+  typography: {
+    body1: {
+      lineHeight: 12,
+      fontSize: 12,
+    },
+  },
+};

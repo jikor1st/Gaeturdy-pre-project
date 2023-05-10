@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { FormWrapper, Input, Button } from "@/styles/TodoFormStyles";
+import { TodoItemType } from "@/types/todos";
+import dayjs from "dayjs";
+import { v4 } from "uuid";
 
 // interface: TypeScript에서 interface는 객체의 타입을 정의하는 방법 중 하나입니다. 인터페이스 이름은 일반적으로 첫 글자를 대문자로 하여 PascalCase로 작성합니다.
 // interface OnTodoSubmitProps: OnTodoSubmitProps라는 이름의 인터페이스를 정의합니다. 이 인터페이스는 TodoForm 컴포넌트의 속성을 정의하며, 이 컴포넌트를 사용할 때 전달되어야 하는 속성의 타입을 명시합니다.
 // onTodoSubmit: (todo: string) => void;: onTodoSubmit은 Props 인터페이스의 추가 속성으로, 함수 타입을 가집니다. 이 함수는 할 일 항목을 추가할 때 호출되며, 매개변수로 할 일의 문자열 값을 받습니다. 함수의 반환 타입은 void로, 반환값이 없음을 나타냅니다. 이 속성을 통해 TodoForm 컴포넌트는 할 일이 추가될 때 상위 컴포넌트로부터 전달받은 onTodoSubmit 함수를 호출할 수 있습니다.
 interface OnTodoSubmitProps {
-  onTodoSubmit: (todo: string) => void;
+  onTodoSubmit: (todo: TodoItemType) => void;
 }
 
 // TodoForm 컴포넌트는 할 일을 입력하고 추가하는 기능을 담당합니다.
@@ -20,7 +23,12 @@ const TodoForm = ({ onTodoSubmit }: OnTodoSubmitProps) => {
     e.preventDefault();
     // JIGI: 오 trim good~
     if (inputValue.trim()) {
-      onTodoSubmit(inputValue);
+      onTodoSubmit({
+        id: v4(),
+        title: inputValue,
+        checked: false,
+        createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss")
+      });
       setInputValue("");
       setIsInputEmpty(false);
     } else {

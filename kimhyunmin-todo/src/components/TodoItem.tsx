@@ -8,6 +8,7 @@ import {
 import checkIcon from "@/assets/checkbox.svg";
 import checkNoIcon from "@/assets/checkbox_nocheck.svg";
 import deleteIcon from "@/assets/delete.svg";
+import { TodoItemType } from "@/types/todos";
 
 const CheckBox = ({
   isChecked,
@@ -25,7 +26,7 @@ const CheckBox = ({
 );
 
 interface TodoItemProps {
-  todo: string;
+  todo: TodoItemType;
   onRemove: () => void;
 }
 
@@ -46,7 +47,7 @@ const TodoItem = ({ todo, onRemove }: TodoItemProps) => {
   return (
     <ItemWrapper>
       <CheckBox isChecked={isChecked} handleCheck={handleCheck} />
-      <Item isChecked={isChecked}>{todo}</Item>
+      <Item isChecked={isChecked}>{todo.title}</Item>
       <DeleteButton src={deleteIcon} alt="삭제 버튼" onClick={onRemove} />
     </ItemWrapper>
   );

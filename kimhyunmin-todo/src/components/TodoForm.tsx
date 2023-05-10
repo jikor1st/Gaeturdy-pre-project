@@ -13,10 +13,12 @@ const TodoForm = ({ onTodoSubmit }: OnTodoSubmitProps) => {
   // useState('') 를 사용하여 inputValue라는 state를 관리하고 있습니다. 이 state는 입력받은 할 일의 내용을 저장합니다.
   const [inputValue, setInputValue] = useState("");
   // 입력 필드의 아웃라인 색상을 관리할 새로운 상태
+  // JIGI: isInputEmpty를 inputValue로만 처리를 할 수 있을것 같음. 불필요한 상태선언 방지!
   const [isInputEmpty, setIsInputEmpty] = useState(false);
   // handleSubmit 함수는 할 일을 추가하는 이벤트 핸들러입니다. 입력된 내용이 있으면 상위 컴포넌트로부터 전달받은 onTodoSubmit 함수를 호출하여 할 일을 추가합니다.
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // JIGI: 오 trim good~
     if (inputValue.trim()) {
       onTodoSubmit(inputValue);
       setInputValue("");

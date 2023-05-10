@@ -32,6 +32,7 @@ interface TodoItemProps {
 // TodoItem 컴포넌트는 각각의 할 일 항목을 나타냅니다.
 const TodoItem = ({ todo, onRemove }: TodoItemProps) => {
   // useState(false) 를 사용하여 isChecked 라는 state를 관리하고 있습니다. 이 state는 할 일의 체크 여부를 나타냅니다.
+  // JIGI: isChecked 여부를 todo리스트 값에 넣어주기
   const [isChecked, setIsChecked] = useState(false);
 
   // handleCheck 함수는 체크박스의 상태를 변경하는 이벤트 핸들러입니다. 현재 isChecked 값을 반대로 설정합니다.

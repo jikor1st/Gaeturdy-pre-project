@@ -9,6 +9,7 @@ import {
   Divider,
 } from "@/styles/TodoListStyles";
 
+// codereview
 // TodoList는 프로젝트의 가장 상위 컴포넌트로, 여기서는 Todo 항목을 추가하고 삭제하는 기능을 구현했습니다.
 const TodoList = () => {
   // 이 useState에서는 useState<string[]>([])를 사용하여 todos라는 state를 관리하고 있습니다. 이 state는 문자열의 배열로 각각의 문자열은 할 일의 내용을 나타냅니다. ([]) 은 'useState'의 인자로 빈 배열을 전달하여 초기 상태값을 설정합니다. 이 상태값은 빈 문자열 배열로 초기화됩니다.

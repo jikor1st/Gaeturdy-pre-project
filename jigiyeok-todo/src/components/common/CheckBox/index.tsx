@@ -17,7 +17,7 @@ const CheckBox = ({ onChange, checked = false }: CheckBoxProps) => {
         type="checkbox"
         hidden
       />
-      {checked ? <Icon icon="CheckBoxOn" /> : <Icon icon="CheckBoxOff" />}
+      {checked ? <Icon icon="CheckOn" /> : <Icon icon="CheckOff" />}
     </CheckBoxLabel>
   );
 };

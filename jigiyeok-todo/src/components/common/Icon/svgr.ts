@@ -1,3 +1,9 @@
-export { ReactComponent as CheckBoxOff } from "@/assets/icons/checkbox-off.svg";
-export { ReactComponent as CheckBoxOn } from "@/assets/icons/checkbox-on.svg";
-export { ReactComponent as Trash } from "@/assets/icons/trash.svg";
+export { ReactComponent as CheckOff } from "@/assets/icons/icon-check-off.svg";
+export { ReactComponent as CheckOn } from "@/assets/icons/icon-check-on.svg";
+export { ReactComponent as Trash } from "@/assets/icons/icon-trash.svg";
+export { ReactComponent as Calendar } from "@/assets/icons/icon-calendar.svg";
+export { ReactComponent as ChevronRight } from "@/assets/icons/icon-chevron-right.svg";
+export { ReactComponent as Close } from "@/assets/icons/icon-close.svg";
+export { ReactComponent as Edit } from "@/assets/icons/icon-edit.svg";
+export { ReactComponent as Logout } from "@/assets/icons/icon-logout.svg";
+export { ReactComponent as Menu } from "@/assets/icons/icon-menu.svg";

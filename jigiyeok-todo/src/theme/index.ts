@@ -1,7 +1,7 @@
 const GlobalTheme = {
   color: {
     primary: {
-      300: "#27C8EC",
+      300: "#17CCE4",
     },
     gray: {
       50: "#FAFAFA",
@@ -16,12 +16,36 @@ const GlobalTheme = {
       900: "#212121",
     },
     white: "#FFFFFF",
-    red: "#FF7070",
+    red: "#FF4F4F",
   },
   typography: {
     h1: {
       fontFamily: "Pretendard",
       fontSize: "24px",
+      fontWeight: 600,
+      lineHeight: 1.5,
+    },
+    h2: {
+      fontFamily: "Pretendard",
+      fontSize: "28px",
+      fontWeight: 600,
+      lineHeight: 1.5,
+    },
+    h3: {
+      fontFamily: "Pretendard",
+      fontSize: "24px",
+      fontWeight: 600,
+      lineHeight: 1.5,
+    },
+    subTitle1: {
+      fontFamily: "Pretendard",
+      fontSize: "20px",
+      fontWeight: 600,
+      lineHeight: 1.5,
+    },
+    subTitle2: {
+      fontFamily: "Pretendard",
+      fontSize: "18px",
       fontWeight: 600,
       lineHeight: 1.5,
     },
@@ -42,6 +66,12 @@ const GlobalTheme = {
       fontSize: "16px",
       fontWeight: 600,
       lineHeight: 1,
+    },
+    caption1: {
+      fontFamily: "Pretendard",
+      fontSize: "14px",
+      fontWeight: 400,
+      lineHeight: 1.5,
     },
   },
 };

@@ -53,6 +53,10 @@ const GlobalStyles = createGlobalStyle`
       font-family: "Pretendard", "-apple-system", "BlinkMacSystemFont",
         "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
         "Droid Sans", "Helvetica Neue", sans-serif;
+
+        ${({ theme }) => css`
+          background: ${theme.color.gray[300]};
+        `}
     }
 
     a{

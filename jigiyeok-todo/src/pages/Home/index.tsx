@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  HomeContainer,
   HomeWrapper,
-  HomeHeader,
-  HomeDate,
+  HomeStickyHeader,
   HomeTabWrapper,
   TodoInputWrapper,
   TodoListWrapper,
@@ -17,11 +15,17 @@ import localStorageController from "@/utils/localStorageController";
 import { useNavigate, useParams } from "react-router-dom";
 import { TodoItemType } from "@/types/todoList";
 import dayjs from "dayjs";
+import CommonHeader from "@/components/common/CommonHeader";
+import CommonLayout from "@/components/common/CommonLayout";
+
+type TodoListParamsType = {
+  view?: "todo" | "complete";
+};
 
 const HomePage = () => {
   const today = dayjs();
   const navigate = useNavigate();
-  const params = useParams<{ view?: "todo" | "complete" }>();
+  const params = useParams<TodoListParamsType>();
   const paramsView = params.view || "all";
   const [todoText, setTodoText] = useState("");
   const [todoList, setTodoList] = useState<TodoItemType[]>(
@@ -40,15 +44,15 @@ const HomePage = () => {
   const displayTodoList = filterdTodoList[paramsView];
 
   const todoTabList = [
-    { title: "전체", path: "/todo-list", view: "all" },
+    { title: "전체", path: "/", view: "all" },
     {
       title: "할 일",
-      path: "/todo-list/todo",
+      path: "/todo",
       view: "todo",
     },
     {
       title: "완료",
-      path: "/todo-list/complete",
+      path: "/complete",
       view: "complete",
     },
   ] as const;
@@ -58,78 +62,88 @@ const HomePage = () => {
   }, [todoList]);
 
   return (
-    <HomeContainer>
+    <CommonLayout.Wrapper>
       <HomeWrapper>
-        <HomeHeader>
-          <HomeDate as="h1">{today.format("YYYY년 MM월 DD일")}</HomeDate>
-          <HomeTabWrapper>
-            {todoTabList.map(({ title, path, view }) => {
-              return (
-                <Tab
-                  isActive={paramsView === view}
-                  onClick={() => {
-                    navigate(path);
-                  }}
-                  key={title}
-                >
-                  {title} {formatMaxTodoTabCount(filterdTodoList[view].length)}
-                </Tab>
-              );
-            })}
-          </HomeTabWrapper>
-          <TodoInputWrapper>
-            <TextField
-              value={todoText}
-              onChange={(event) => {
-                setTodoText(event.target.value);
-              }}
-              placeholder="할 일을 추가해주세요"
-            />
-            <Button
-              onClick={() => {
-                if (todoText === "") return;
-                setTodoList((prev) => [
-                  ...prev,
-                  {
-                    title: todoText,
-                    checked: false,
-                    id: v4(),
-                    createdAt: dayjs().format("YYYY-MM-DD"),
-                  },
-                ]);
-                setTodoText("");
-              }}
-            >
-              추가
-            </Button>
-          </TodoInputWrapper>
-        </HomeHeader>
-        <TodoListWrapper>
-          {displayTodoList.map(({ id, title, checked }) => (
-            <TodoItem
-              title={title}
-              checked={checked}
-              onChangeChecked={() => {
-                setTodoList((prev) =>
-                  prev.map((item) =>
-                    item.id === id
-                      ? {
-                          ...item,
-                          checked: !item.checked,
-                        }
-                      : item
-                  )
+        <HomeStickyHeader>
+          <CommonHeader>
+            <CommonHeader.Title>
+              {today.format("YYYY년 MM월 DD일")}
+            </CommonHeader.Title>
+            <CommonHeader.MenuButton />
+          </CommonHeader>
+          <CommonLayout.Container>
+            <HomeTabWrapper>
+              {todoTabList.map(({ title, path, view }) => {
+                return (
+                  <Tab
+                    isActive={paramsView === view}
+                    onClick={() => {
+                      navigate(path);
+                    }}
+                    key={title}
+                  >
+                    {title}{" "}
+                    {formatMaxTodoTabCount(filterdTodoList[view].length)}
+                  </Tab>
                 );
-              }}
-              onDelete={() => {
-                setTodoList((prev) => prev.filter((item) => item.id !== id));
-              }}
-              key={id}
-            />
-          ))}
-        </TodoListWrapper>
+              })}
+            </HomeTabWrapper>
+            <TodoInputWrapper>
+              <TextField
+                value={todoText}
+                onChange={(event) => {
+                  setTodoText(event.target.value);
+                }}
+                placeholder="할 일을 추가해주세요"
+              />
+              <Button
+                onClick={() => {
+                  if (todoText === "") return;
+                  setTodoList((prev) => [
+                    ...prev,
+                    {
+                      title: todoText,
+                      checked: false,
+                      id: v4(),
+                      createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+                    },
+                  ]);
+                  setTodoText("");
+                }}
+              >
+                추가
+              </Button>
+            </TodoInputWrapper>
+          </CommonLayout.Container>
+        </HomeStickyHeader>
+        <CommonLayout.Container>
+          <TodoListWrapper>
+            {displayTodoList.map(({ id, title, checked }) => (
+              <TodoItem
+                title={title}
+                checked={checked}
+                onChangeChecked={() => {
+                  setTodoList((prev) =>
+                    prev.map((item) =>
+                      item.id === id
+                        ? {
+                            ...item,
+                            checked: !item.checked,
+                          }
+                        : item
+                    )
+                  );
+                }}
+                onDelete={() => {
+                  setTodoList((prev) => prev.filter((item) => item.id !== id));
+                }}
+                key={id}
+              />
+            ))}
+          </TodoListWrapper>
+        </CommonLayout.Container>
       </HomeWrapper>
-    </HomeContainer>
+    </CommonLayout.Wrapper>
   );
 };
 

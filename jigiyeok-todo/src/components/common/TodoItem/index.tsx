@@ -30,7 +30,7 @@ const TodoItem = ({
       <TodoCheckBoxWrapper>
         <CheckBox checked={checked} onChange={onChangeChecked} />
       </TodoCheckBoxWrapper>
-      <TodoItemTitle variant="body1">{title}</TodoItemTitle>
+      <TodoItemTitle variant="subTitle2">{title}</TodoItemTitle>
       <TodoDeleteIconButton className="todo-item__delete" onClick={onDelete}>
         <Icon icon="Trash" />
       </TodoDeleteIconButton>

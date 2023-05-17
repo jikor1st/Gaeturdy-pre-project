@@ -1,5 +1,3 @@
-import React from 'react';
-import './App.css';
 import GlobalStyle from '@/styles/global-styles';
 import { ThemeProvider } from 'styled-components';
 import { theme } from '@/styles/theme'
@@ -20,7 +18,6 @@ function App() {
           btntxt = "추가"
         />
       </TodoList>
-      {""}
     </ThemeProvider>
   );
 }

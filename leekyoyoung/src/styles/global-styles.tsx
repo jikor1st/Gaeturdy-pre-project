@@ -1,5 +1,5 @@
 import reset from 'styled-reset'
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, css } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
     @font-face {
@@ -81,12 +81,23 @@ const GlobalStyle = createGlobalStyle`
     button {
         font-family: 'Pretendard';
         background: inherit; 
-        border:none; 
-        box-shadow:none; 
-        border-radius:0;
-        padding:0; 
-        overflow:visible; 
-        cursor:pointer
+        border: none; 
+        box-shadow: none; 
+        border-radius: 0;
+        padding: 0; 
+        overflow: visible; 
+        cursor: pointer
+    }
+
+    input {
+        padding: 12px 16px;
+        border: 1px solid #E0E0E0;
+        font-family: 'Pretendard';
+        color: #424242;
+        line-height: 24px;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 8px;
     }
 
     @media only screen and (max-width: 768px) {

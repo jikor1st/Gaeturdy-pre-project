@@ -20,15 +20,6 @@ export const TextField = styled.input `
     display: inline-block;
     width: calc( 100% - 88px);
     height: 100%;
-    padding: 12px 16px;
-    font-family: 'Pretendard';
-
-    ${({theme})=>css`
-        border: 1px solid  ${theme.colors.Gray200};
-        font-size:${theme.Body1.FontSize};
-        font-weight:${theme.Body1.FontWeight};
-        border-radius: ${theme.Radius.BRadius};
-    `}
 
     &::placeholder {
         color: ${props => props.theme.colors.Gray400};
@@ -56,8 +47,8 @@ export const AddButton = styled.button `
 `
 export const DelButton = styled.button`
     position: absolute;
-    right: -96px;
-    top: 0;
+    right: 0;
+    bottom: 0;
     background-image: url(${delSVG});
     background-repeat: no-repeat;
     background-size: 20px, 20px;
@@ -79,22 +70,14 @@ export const ContentsWrapper = styled.ul `
     `
 export const TodoItem = styled.li` 
     position: relative;
-
-    &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        bottom: 0;
-        background-color: ${props => props.theme.colors.Gray100};
-        height: 1px;
-        width: 100%;
-    }
+    background-color: #ffffff;
+    border-bottom: 1px solid ${props => props.theme.colors.Gray100};;
 
     label {
         position: relative;
         display: block;
-        padding: 15px 0 12px 0;
-        overflow: hidden;
+        padding: 14px 0 12px 0;
+
 
         input[type="checkbox"] {
             position: absolute;
@@ -112,7 +95,7 @@ export const TodoItem = styled.li`
 
                     &::before {
                         background-image: url(${checkboxSVG});
-                        background-position: -4px -4px;
+                        background-position: -5px -5px;
                         background-repeat: no-repeat;
                         border-color: ${props=>props.theme.colors.Primary};
                     }
@@ -182,8 +165,8 @@ export const TodoItem = styled.li`
 
 export const EditButton = styled.button` 
     position: absolute;
-    right: -48px;
-    top: 0;
+    right: 48px;
+    bottom: 0;
     background-image: url(${editSVG});
     background-repeat: no-repeat;
     background-size: 20px, 20px;

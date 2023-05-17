@@ -78,6 +78,16 @@ const GlobalStyle = createGlobalStyle`
     a {
         text-decoration: none;
     }
+    button {
+        font-family: 'Pretendard';
+        background: inherit; 
+        border:none; 
+        box-shadow:none; 
+        border-radius:0;
+        padding:0; 
+        overflow:visible; 
+        cursor:pointer
+    }
 
     @media only screen and (max-width: 768px) {
         body {

@@ -1,17 +1,17 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 function TabMenu() {
     return (
         <TabWrapper>
             <TabList>
                 <TabListItem className="active">
-                    <a href="#">전체<span> 99+</span></a>
+                    <button>전체<span> 99+</span></button>
                 </TabListItem>
                 <TabListItem>
-                    <a href="#">할 일<span> 11</span></a>
+                    <button>할 일<span> 11</span></button>
                 </TabListItem>
                 <TabListItem>
-                    <a href="#">완료<span> 1</span></a>
+                    <button>완료<span> 1</span></button>
                 </TabListItem>
             </TabList>
         </TabWrapper>
@@ -22,8 +22,7 @@ export default TabMenu;
 
 
 export const TabWrapper = styled.div `
-    padding: 23px 0;
-    border-bottom: 1px solid ${props => props.theme.colors.Gray200};
+    padding: 42px 0 24px;
 `
 
 export const TabList = styled.ul `
@@ -31,24 +30,27 @@ export const TabList = styled.ul `
 export const TabListItem = styled.li `
     display: inline-block;
 
-    a { 
-        box-sizing: border-box;
-        color: ${props => props.theme.colors.Gray400};
-        padding-bottom: 5px;
-        box-sizing: border-box;
-        font-size:  ${props => props.theme.Body2.FontSize};
-        font-weight: ${props => props.theme.Body2.FontWeight};
-        line-height: ${props => props.theme.Body2.LineHight};
+    button { 
+        padding-bottom: 6px;
+        ${({theme})=>css`
+            color: ${theme.colors.Gray400};
+            font-size:  ${theme.Body1.FontSize};
+            line-height: ${theme.Body1.LineHight};
+            font-weight: ${theme.Body1.FontWeight};
+        `}
     }
 
     &.active {
-        a {
-            color: ${props => props.theme.colors.Primary};
-            border-bottom: 2px solid ${props => props.theme.colors.Primary};
+        button {
+            ${({theme})=> css`
+                color: ${theme.colors.Primary};
+                border-bottom: 2px solid ${theme.colors.Primary};
+            `}
+            font-weight: 600;
         }
     }
 
     &+li {
-        margin-left: 24px;
+        margin-left: 15px;
     }
 `

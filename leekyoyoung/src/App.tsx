@@ -18,7 +18,6 @@ function App() {
           btntxt = "추가"
         />
       </TodoList>
-      {""}
     </ThemeProvider>
   );
 }

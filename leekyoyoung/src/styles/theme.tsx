@@ -1,7 +1,7 @@
 import { DefaultTheme } from 'styled-components';
 
 const colors = {
-  Primary: '#27C8EC',
+  Primary: '#17CCE4',
   Gray50: '#FAFAFA',
   Gray100: '#F5F5F5',
   Gray200: '#EEEEEE',
@@ -13,12 +13,36 @@ const colors = {
   Gray800: '#424242',
   Gray900: '#212121',
   white: '#ffffff',
-  red: '#FF7070',
+  red: '#FF4F4F',
 };
 
 const H1 = {
+  LineHight: '48px',
+  FontSize: '32px',
+  FontWeight: '600'
+}
+
+const H2 = {
+  LineHight: '42px',
+  FontSize: '28px',
+  FontWeight: '600'
+}
+
+const H3 = {
   LineHight: '36px',
   FontSize: '24px',
+  FontWeight: '600'
+}
+
+const SubTit1 = {
+  LineHight: '30px',
+  FontSize: '20px',
+  FontWeight: '600'
+}
+
+const SubTit2 = {
+  LineHight: '27px',
+  FontSize: '18px',
   FontWeight: '600'
 }
 
@@ -35,9 +59,15 @@ const Body2 = {
 }
 
 const Button1 = {
-  LineHight: '16px',
+  LineHight: '18px',
   FontSize: '16px',
   FontWeight: '600'
+}
+
+const Caption1 = {
+  LineHight: '21px',
+  FontSize: '14px',
+  FontWeight: '400'
 }
 
 const Radius = {
@@ -49,8 +79,13 @@ export type ColorsTypes = typeof colors;
 export const theme: DefaultTheme = {
   colors,
   H1,
+  H2,
+  H3,
   Body1,
   Body2,
+  SubTit1,
+  SubTit2,
   Button1,
+  Caption1,
   Radius
 };

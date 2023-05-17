@@ -1,6 +1,7 @@
 
 export type ListItem = {
-    id: number;
+    id: string;
     text: string;
     checked: boolean;
+    inputDate: string;
 };

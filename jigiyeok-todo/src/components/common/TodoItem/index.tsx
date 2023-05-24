@@ -1,13 +1,18 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, useEffect, useRef, useState } from "react";
 import CheckBox from "../CheckBox";
 import {
   TodoItemWrapper,
-  TodoCheckBoxWrapper,
   TodoItemTitle,
-  TodoDeleteIconButton,
+  TodoItemContentWrapper,
+  TodoModifyButtonWrapper,
+  TodoModifyButton,
+  TodoItemDateWrapper,
+  TodoItemInfoWrapper,
 } from "./TodoItem.styles";
 import Icon from "../Icon";
 import classNames from "classnames";
+import Typography from "../Typography";
+import useSlider from "@/hooks/useSlider";
 
 type TodoItemProps = {
   title: string;
@@ -21,19 +26,35 @@ const TodoItem = ({
   onChangeChecked,
   onDelete,
 }: TodoItemProps) => {
+  const { registerEvent } = useSlider({
+    width: 96,
+  });
+
   return (
     <TodoItemWrapper
+      {...registerEvent}
       className={classNames({
         checked,
       })}
     >
-      <TodoCheckBoxWrapper>
+      <TodoItemContentWrapper>
         <CheckBox checked={checked} onChange={onChangeChecked} />
-      </TodoCheckBoxWrapper>
-      <TodoItemTitle variant="subTitle2">{title}</TodoItemTitle>
-      <TodoDeleteIconButton className="todo-item__delete" onClick={onDelete}>
-        <Icon icon="Trash" />
-      </TodoDeleteIconButton>
+        <TodoItemInfoWrapper>
+          <TodoItemTitle variant="subTitle2">{title}</TodoItemTitle>
+          <TodoItemDateWrapper>
+            <Icon icon="Calendar" />
+            <Typography variant="caption1">2023.04.18 14:02</Typography>
+          </TodoItemDateWrapper>
+        </TodoItemInfoWrapper>
+      </TodoItemContentWrapper>
+      <TodoModifyButtonWrapper>
+        <TodoModifyButton className="edit">
+          <Icon icon="Edit" />
+        </TodoModifyButton>
+        <TodoModifyButton className="delete">
+          <Icon icon="Trash" />
+        </TodoModifyButton>
+      </TodoModifyButtonWrapper>
     </TodoItemWrapper>
   );
 };

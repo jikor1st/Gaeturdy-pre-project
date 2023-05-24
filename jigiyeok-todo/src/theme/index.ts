@@ -16,7 +16,9 @@ const GlobalTheme = {
       900: "#212121",
     },
     white: "#FFFFFF",
-    red: "#FF4F4F",
+    red: {
+      300: "#FF4F4F",
+    },
   },
   typography: {
     h1: {

@@ -116,32 +116,31 @@ const HomePage = () => {
             </TodoInputWrapper>
           </CommonLayout.Container>
         </HomeStickyHeader>
-        <CommonLayout.Container>
-          <TodoListWrapper>
-            {displayTodoList.map(({ id, title, checked }) => (
-              <TodoItem
-                title={title}
-                checked={checked}
-                onChangeChecked={() => {
-                  setTodoList((prev) =>
-                    prev.map((item) =>
-                      item.id === id
-                        ? {
-                            ...item,
-                            checked: !item.checked,
-                          }
-                        : item
-                    )
-                  );
-                }}
-                onDelete={() => {
-                  setTodoList((prev) => prev.filter((item) => item.id !== id));
-                }}
-                key={id}
-              />
-            ))}
-          </TodoListWrapper>
-        </CommonLayout.Container>
+
+        <TodoListWrapper>
+          {displayTodoList.map(({ id, title, checked }) => (
+            <TodoItem
+              title={title}
+              checked={checked}
+              onChangeChecked={() => {
+                setTodoList((prev) =>
+                  prev.map((item) =>
+                    item.id === id
+                      ? {
+                          ...item,
+                          checked: !item.checked,
+                        }
+                      : item
+                  )
+                );
+              }}
+              onDelete={() => {
+                setTodoList((prev) => prev.filter((item) => item.id !== id));
+              }}
+              key={id}
+            />
+          ))}
+        </TodoListWrapper>
       </HomeWrapper>
     </CommonLayout.Wrapper>
   );

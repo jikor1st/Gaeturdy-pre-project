@@ -17,6 +17,7 @@ export const HomeStickyHeader = styled.div`
     left: 0;
     background: ${theme.color.white};
     padding-bottom: 32px;
+    z-index: 100;
   `}
 `;
 
@@ -38,5 +39,5 @@ export const TodoInputWrapper = styled.div`
 export const TodoListWrapper = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  overflow: hidden;
 `;

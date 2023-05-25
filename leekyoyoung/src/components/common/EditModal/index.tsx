@@ -22,17 +22,17 @@ return (
     <ModalContents>
         <h2>할 일 수정</h2>
         <input
-        type="text"
-        value={editedValue}
-        onChange={handleInputChange}
+            type="text"
+            value={editedValue}
+            onChange={handleInputChange}
         />
         <ButtonArea>
-        <button type="button" onClick={onClose}>
-            취소
-        </button>
-        <button type="button" onClick={handleEditButtonClick} className="fill">
-            수정 완료
-        </button>
+            <button type="button" onClick={onClose}>
+                취소
+            </button>
+            <button type="button" onClick={handleEditButtonClick} className="fill">
+                수정 완료
+            </button>
         </ButtonArea>
     </ModalContents>
     </EditModalWrapper>
@@ -47,6 +47,7 @@ export const EditModalWrapper = styled.div `
     top: 0;
     left: 0;
     background-color: rgba(33, 33, 33, 0.4);
+    z-index: 99;
 `
 
 export const ModalContents = styled.div ` 

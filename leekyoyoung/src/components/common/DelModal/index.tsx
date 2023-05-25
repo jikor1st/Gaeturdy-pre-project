@@ -23,6 +23,7 @@ export const DelModalWrapper = styled.div `
     top: 0;
     left: 0;
     background-color: rgba(33, 33, 33, 0.4);
+    z-index: 99;
 `
 
 export const ModalContents = styled.div ` 

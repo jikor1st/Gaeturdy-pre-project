@@ -75,8 +75,12 @@ export const TodoItem = styled.li`
 
     label {
         position: relative;
+        background-color: #ffffff;
         display: block;
+        z-index: 1;
         padding: 14px 0 12px 0;
+        transform: translateX(0);
+        touch-action: none;
 
 
         input[type="checkbox"] {

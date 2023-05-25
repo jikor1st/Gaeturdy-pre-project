@@ -1,239 +1,225 @@
-import styled, {css} from "styled-components";
-import checkboxSVG from '@icon/tab-checkbox.svg';
-import delSVG from '@icon/tab-delete.svg';
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { ListItem } from "@/type/todolisttype";
+import localStorageController from '@/module/localstorage';
+import * as t from "@/components/common//TabContents/style";
+import uuid from 'react-uuid'
+import DelModal from '@/components/common/DelModal';
+import ModalPortal from '@/modal/ModalPortal';
+import EditModal from '@/components/common/EditModal'
 
 interface MyProps {
     placeholder: string;
     btntxt : string;
 }
 
-type ListItem = {
-    id: number;
-    text: string;
-};
-
-
 
 const TabContents = (props:MyProps) => {
-    // const [변수명, 함수 ] = useState<type>(); 
-    // 변수의 값을 업데이트 하기 위해선 함수가 호출 되어야 함.
+    const [inputValue, setInputValue] = useState<string>("");
+    const [inputDate, setInputDate] = useState<string>("");
+    const [isDown, setDown] = useState<boolean>(false);
+    const [modalOpenId, setModalOpenId] = useState<string>("");
+    const [editModalOpenId, setEditModalOpenId] = useState<string>("");
+    const [checked] = useState<boolean>(false);
+    // const [downPosX, setdownPosX] = useState(0);
+    const downPosX = useRef(0);
+    const movePosX = useRef(0);
+    // const [movePosX, setmovePosX] = useState(0);
+    const [listItems, setListItems] = useState<ListItem[]>(() => {
+        const saved: ListItem[] | null = localStorageController.getItem('todolist');
+        if (saved !== null) {
+            return saved;
+        } else {
+            return [];
+        }
+    });
 
-    const [inputValue, setInputValue] = useState<string>(""); // 문자열 inputValue를 초기값 설정 
-    const [listItems, setListItems] = useState<ListItem[]>([]); // 배열 listItems 초기값 설정
-    const [nextId, setNextId] = useState<number>(1); // 넘버 nextId 초기값 설정
-
-    /*
-        *input 값이 변경될 때마다 호출되는 함수
-        *event: React.ChangeEvent<HTMLInputElement>
-        *event: any 타입도 가능 하나 남용하면 타입스크립트의 장점인 안정성과 가독성을 상실함
-        *리엑트에서 input의 요소값이 변경될 때 발생하는 이벤트를 다루는 타입으로  event.target.value 속성 을 가지고 있다
-    */
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
+        // input에서 변경되는 내용을 setInputValue에 저장한다.
     };
 
-    // 폼 제출 시 호출되는 함수
-    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // 폼 제출 기본 동작 막기
+    const handleClick = () => {
+        const currentDate = new Date();
+        // 새로운 날짜 데이터를 생성한다.
+        const formattedDate = currentDate.toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour12: false,
+            hour: 'numeric',
+            minute: 'numeric',
+        });
 
-        const newItem: ListItem = { id: nextId, text: inputValue };
-        // newItem.text가 빈 문자열인 경우 추가하지 않음
-        // trim()은 공백을 제거한 값을 반환
+        setInputDate(formattedDate);
+        // setInpuDate에 날짜를 저장한다.
+    };
+
+    const handleEditButtonClick = (id: string, editedValue: string) => {
+        const updatedListItems = listItems.map((item) =>
+        // map()을 사용하여 listItems를 순회하며 각 항목에 대한 콜백 함수를 실행한다
+            item.id === id ? { ...item, text: editedValue } : item
+            // item.id 와 id 값이 값을 떄 item 기존 항목은 유지하며 text의 값을 editedValue로 업데이트를 해준다
+            // 일치하지 않은 경우 그대로 반환한다.
+        );
+        setListItems(updatedListItems);
+        // setListItems에 반환된 항목을 저장한다.
+
+    };
+
+
+    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        // 기본동작 막기
+        const newItem: ListItem = { id: uuid(), text: inputValue, checked : checked, inputDate: inputDate};
+        // listItem 타입의 newItem을 생성하여 에 id, text, checked, inputDate 값을 할당한다.
         if (!newItem.text.trim()) {
+            // newItem.text에서 여백으로 작성이 되면 return 한다.
             return;
         }
-        setListItems([...listItems, newItem]); // 새로운 li 엘리먼트 추가
-        // listItem의 배열의 상태로 업데이트 함
-
-        setInputValue(""); // input 값 초기화
-        setNextId(nextId + 1); // 다음 id 값 업데이트
-        // TodoItem 의 key 값이 1씩 올라 감 *고유번호
+        setListItems([...listItems, newItem]);
+        // 기존 listItems 배열에 newItem을 추가해주고 setlistItems에 저장한다.
+        setInputValue("")
+        // setInputValue의 값을 초기화 한다.
     };
 
-    // li 삭제 버튼 클릭 시 호출되는 함수
-    const handleDeleteButtonClick = (id: number) => {
+    const handleDeleteButtonClick = (id: string) => {
         const updatedListItems = listItems.filter(item => item.id !== id);
-        // listItems에서 id와 일치하는 아이템을 제외한 새로운 배열을 생성
-        // item.id !== id 조건을 만족하는 요소만 남겨둠
+        // item을 확인하고, item.id가 주어진 id와 일치하지 않는지 확인한다.
+        // item.id가 id와 일치하지 않으면 해당 항목은 유지고 결과 배열에 포함된다
+        // item.id가 id와 일치하면 해당 항목은 결과 배열에서 제외한다.
         setListItems(updatedListItems);
-        // listItem의 배열 상태를 undatedListItems 배열로 없데이트 함
+        // 결과를 setListItems를 호출하여 업데이트한다.
     };
+    
+
+    const onChageChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const id = String(e.target.value);
+        setListItems(
+            listItems.map((item) =>
+                item.id === id ? { ...item, checked: !item.checked } : item
+            )
+        );
+    }
+
+    // const slideItem = (e : React.DragEvent<HTMLLabelElement>) => {
+    //     const id = (e.target as HTMLLabelElement).id;
+    //     e.dataTransfer.setData("text/plain", id);
+    //     const target = e.currentTarget;
+
+    // }
+
+    const handleDelModalShow = (id: string) => {
+        setModalOpenId(id);
+    };
+
+    const handleEditModalShow = (id: string) => {
+        setEditModalOpenId(id);
+    };
+
+    const handleDelModalHide = () => {
+        setModalOpenId("");
+    };
+
+
+    const handleEditModalHide = () => {
+        setEditModalOpenId("");
+    };
+
+    useEffect(() => {
+        localStorageController.setItem("todolist",listItems);
+        setListItems(listItems)
+    }, [listItems]);
 
     return (
-        <Container>
-            <InputWrapper onSubmit={handleFormSubmit} 
-            // onSubmit 은 form요소의 이벤트 핸들러 함수를 등록하는 것을 의미함
-            // form 요소에서 이벤트가 발생하면 기본적으로 페이지가 다시 로드 되는데 
-            // 이를 방지하고자 함수를 등록시킴
-            >
-                <TodoField 
+        <t.Container>
+            <t.InputWrapper onSubmit={handleFormSubmit}>
+                <t.TextField 
                     type="text" 
                     placeholder= {props.placeholder}
-                    value={inputValue} // 변한 값을 저장함
-                    onChange={handleInputChange} // 사용자가 입력할 때 변하는 값을 받음
+                    value={inputValue} 
+                    onChange={handleInputChange}
+                    onClick={handleClick}
                 />
-                <AddButton type="submit">{props.btntxt}</AddButton>
-            </InputWrapper>
-            <ContentsWrapper>
-                <ul>
-                    {listItems.map(item => (
-                        <TodoItem  key={item.id}>
-                            <label>
-                                <input type="checkbox" />
-                                <span>
-                                    {item.text}
-                                </span>
-                            </label>
-                            <DelButton onClick={() => handleDeleteButtonClick(item.id)}>삭제</DelButton>
-                        </TodoItem>
-                    ))}
-                </ul>
-            </ContentsWrapper>
-        </Container>
+                <t.AddButton type="submit">{props.btntxt}</t.AddButton>
+            </t.InputWrapper>
+            <t.ContentsWrapper>
+                {listItems.map((item) => (
+                    <t.TodoItem  key={item.id}>
+                        <label
+                            onPointerDown={(e)=> {
+                                setDown(true); 
+                                downPosX.current = e.clientX - movePosX.current
+                                const target = e.currentTarget;
+                                if(movePosX.current = -95) {
+                                    console.log('1')
+                                }
+                                target.style.transition = 'none';
+                            }}
+                            onPointerMove={(e)=> {
+                                if(!isDown) {
+                                    return;
+                                }
+                                const target = e.currentTarget;
+                                movePosX.current = e.clientX - downPosX.current;
+                                if(movePosX.current < -95){
+                                    movePosX.current = -95;
+                                } else if(movePosX.current > 0) {
+                                    movePosX.current = 0;
+                                }
+                                target.style.transform  =`translateX(${movePosX.current}px)`
+                            }}
+                            onPointerUp={(e)=> {
+                                const target = e.currentTarget;
+                                setDown(false); 
+                                if (movePosX.current < -48) { 
+                                    movePosX.current = -96;
+                                } else {
+                                    movePosX.current = 0;
+                                }
+                                target.style.transition = 'ease-in .4s transform'
+                                target.style.transform  =`translateX(${movePosX.current}px)`
+                            }}
+                        >
+                            <input type="checkbox"
+                                onChange={onChageChecked}
+                                checked={item.checked}
+                                value={item.id}
+                                onClick={(e)=> {
+                                    e.stopPropagation();
+                                    return;
+                                }}
+                            />
+                            <span>
+                                {item.text}
+                                <em>{item.inputDate}</em>
+                            </span>
+                        </label>
+                        <t.EditButton onClick={() => handleEditModalShow(item.id)}>수정</t.EditButton>
+                        {editModalOpenId === item.id && (
+                            <ModalPortal key={item.id}>
+                                <EditModal
+                                    value={item.text}
+                                    onClose={handleEditModalHide}
+                                    onEdit={(editedValue:any) => handleEditButtonClick(item.id, editedValue)}
+                                />
+                            </ModalPortal>
+                        )}
+
+                        <t.DelButton onClick={() => handleDelModalShow(item.id)}>삭제</t.DelButton>
+                        {modalOpenId === item.id && (
+                            <ModalPortal key={item.id}>
+                                <DelModal
+                                    onClose={handleDelModalHide}
+                                    onDelete={() => handleDeleteButtonClick(item.id)}
+                                />
+                            </ModalPortal>
+                        )}
+                    </t.TodoItem>
+                ))}
+            </t.ContentsWrapper>
+        </t.Container>
     );
 }
 
 
 export default TabContents;
-
-export const Container = styled.div `
-    padding-top: 28px;
-`
-export const InputWrapper = styled.form `
-    display: flex;
-    height: 44px;
-`
-export const Label = styled.label `
-    width: 100%;
-    height: 100%;
-`
-
-export const TodoField = styled.input `
-    display: inline-block;
-    width: calc( 100% - 79px);
-    height: 100%;
-    padding: 12px 16px;
-    font-family: 'Pretendard';
-    font-size: ${props =>props.theme.Body1.FontSize};
-    font-weight: ${props =>props.theme.Body1.FontWeight};
-    border: 1px solid ${props=> props.theme.colors.Gray200};
-    border-radius: ${props=> props.theme.Radius.BRadius};
-    &::placeholder {
-        color: ${props => props.theme.colors.Gray400};
-        font-size: 16px;
-    }
-`
-
-
-export const AddButton = styled.button `
-    display: inline-block;
-    margin-left: 20px;
-    width: 59px;
-    height: 100%;
-    color: ${props => props.theme.colors.white};
-    font-size:  ${props => props.theme.Button1.FontSize};
-    font-weight: ${props => props.theme.Button1.FontWeight};
-    line-height: ${props => props.theme.Button1.LineHight};
-    background-color: ${props=>props.theme.colors.Primary};
-    border: none;
-    border-radius: ${props=> props.theme.Radius.BRadius};
-    cursor: pointer;
-`
-export const DelButton = styled.button`
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 0;
-    background-image: url(${delSVG});
-    background-repeat: no-repeat;
-    background-size: 24px, 24px;
-    background-position: center center;
-    border: none;
-    outline: none;
-    background-color: transparent;
-    text-indent: -9999px;
-    overflow: hidden;
-    width:30px;
-    height: 30px;
-    cursor: pointer;
-`
-
-export const ContentsWrapper = styled.div ` 
-    margin-top: 34px;
-
-    `
-export const TodoItem = styled.li` 
-    position: relative;
-    margin-bottom: 21px;
-
-    label {
-        position: relative;
-        display: block;
-
-        input[type="checkbox"] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translate(0, 0);
-            margin: 0;
-            width: 30px;
-            height: 30px;
-            opacity: 0;
-
-            &:checked {
-                &+span {
-                    color: ${props => props.theme.colors.Gray400};
-
-                    &::before {
-                        background-image: url(${checkboxSVG});
-                        background-position: -6px -6px;
-                        background-repeat: no-repeat;
-                        border-color: ${props=>props.theme.colors.Primary};
-                    }
-                }
-            }
-
-            & + span {
-                position: relative;
-                display: inline-block;
-                padding-left: 44px;
-                line-height: 30px;
-                color: ${props=>props.theme.colors.Gray800};
-                font-size: ${props=>props.theme.Body1.FontSize};
-                font-weight: ${props=>props.theme.Body1.FontWeight};
-                cursor: pointer;
-                width: calc( 100% - 54px);
-                overflow:hidden;
-                text-overflow:ellipsis;
-                white-space:nowrap;
-
-                &::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    display: inline-block;
-                    width: 30px;
-                    height: 30px;
-                    border: 3px solid ${props => props.theme.colors.Gray200};
-                    border-radius: 50%;
-                    overflow: hidden;
-                    box-sizing: border-box;
-                }
-            }
-        }
-    }
-
-
-    &:last-of-type{
-        margin-bottom: 0;
-    }
-
-    &:hover {
-        ${DelButton} {
-            display: block;
-        }
-    }
-
-`

@@ -6,18 +6,21 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import GlobalTheme from "@/theme";
 import GlobalStyles from "@/styles/GlobalStyles";
+import { RecoilRoot } from "recoil";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={GlobalTheme}>
-        <GlobalStyles />
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <RecoilRoot>
+      <BrowserRouter>
+        <ThemeProvider theme={GlobalTheme}>
+          <GlobalStyles />
+          <App />
+        </ThemeProvider>
+      </BrowserRouter>
+    </RecoilRoot>
   </React.StrictMode>
 );
 

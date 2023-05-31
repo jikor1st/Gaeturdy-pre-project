@@ -1,17 +1,13 @@
 import styled, { css } from "styled-components";
 import Typography from "../Typography";
-import { ellipsisWithLine } from "@/utils/styles";
+import { ellipsisWithLine } from "@/utils/common/styles";
 
 export const TodoItemWrapper = styled.li`
   position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 15px 16px 12px;
-  ${({ theme }) => css`
-    border-bottom: 1px solid ${theme.color.gray[100]};
-  `}
-  touch-action:none;
+  touch-action: none;
 `;
 
 export const TodoItemContentWrapper = styled.div`
@@ -22,11 +18,23 @@ export const TodoItemContentWrapper = styled.div`
   overflow: hidden;
 `;
 
-export const TodoItemInfoWrapper = styled.div``;
+export const TodoItemCheckBoxWrapper = styled.div`
+  padding-left: 16px;
+`;
+
+export const TodoItemInfoWrapper = styled.div`
+  max-width: calc(100% - 44px);
+  width: 100%;
+  padding: 15px 16px 12px 0;
+  ${({ theme }) => css`
+    border-bottom: 1px solid ${theme.color.gray[100]};
+  `}
+`;
 
 export const TodoItemTitle = styled(Typography)`
   width: 100%;
-  ${ellipsisWithLine(1)};
+  ${ellipsisWithLine(2)};
+  word-break: break-word;
 
   ${({ theme }) => css`
     color: ${theme.color.gray[800]};

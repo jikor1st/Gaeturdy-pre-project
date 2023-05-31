@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import Typography from "../Typography";
 
 export const TabButton = styled(Typography).attrs({
-  variant: "body2",
+  variant: "body1",
   as: "button",
 })`
   ${({ theme }) => css`

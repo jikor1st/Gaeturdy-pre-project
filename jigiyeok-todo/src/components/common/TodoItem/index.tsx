@@ -8,11 +8,13 @@ import {
   TodoModifyButton,
   TodoItemDateWrapper,
   TodoItemInfoWrapper,
+  TodoItemCheckBoxWrapper,
 } from "./TodoItem.styles";
 import Icon from "../Icon";
 import classNames from "classnames";
 import Typography from "../Typography";
-import useSlider from "@/hooks/useSlider";
+import useSlider from "@/hooks/common/useSlider";
+import useTodoModal from "@/hooks/Todo/useTodoModal";
 
 type TodoItemProps = {
   title: string;
@@ -30,6 +32,18 @@ const TodoItem = ({
     width: 96,
   });
 
+  const { open } = useTodoModal();
+  const openTodoEditModal = () => {
+    open("todoItemEdit", {
+      state: {},
+    });
+  };
+  const openTodoDeleteModal = () => {
+    open("todoItemDelete", {
+      state: {},
+    });
+  };
+
   return (
     <TodoItemWrapper
       {...registerEvent}
@@ -38,7 +52,9 @@ const TodoItem = ({
       })}
     >
       <TodoItemContentWrapper>
-        <CheckBox checked={checked} onChange={onChangeChecked} />
+        <TodoItemCheckBoxWrapper>
+          <CheckBox checked={checked} onChange={onChangeChecked} />
+        </TodoItemCheckBoxWrapper>
         <TodoItemInfoWrapper>
           <TodoItemTitle variant="subTitle2">{title}</TodoItemTitle>
           <TodoItemDateWrapper>
@@ -48,10 +64,20 @@ const TodoItem = ({
         </TodoItemInfoWrapper>
       </TodoItemContentWrapper>
       <TodoModifyButtonWrapper>
-        <TodoModifyButton className="edit">
+        <TodoModifyButton
+          className="edit"
+          onClick={() => {
+            openTodoEditModal();
+          }}
+        >
           <Icon icon="Edit" />
         </TodoModifyButton>
-        <TodoModifyButton className="delete">
+        <TodoModifyButton
+          className="delete"
+          onClick={() => {
+            openTodoDeleteModal();
+          }}
+        >
           <Icon icon="Trash" />
         </TodoModifyButton>
       </TodoModifyButtonWrapper>

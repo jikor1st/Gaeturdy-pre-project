@@ -23,17 +23,13 @@ export const HomeStickyHeader = styled.div`
 
 export const HomeTabWrapper = styled.div`
   display: flex;
-  gap: 24px;
-  padding-bottom: 20px;
-  margin-bottom: 32px;
-  ${({ theme }) => css`
-    border-bottom: 1px solid ${theme.color.gray[200]};
-  `}
+  gap: 16px;
+  margin: 32px 0 24px;
 `;
 
 export const TodoInputWrapper = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 12px;
 `;
 
 export const TodoListWrapper = styled.ul`

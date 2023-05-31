@@ -1,17 +1,17 @@
+import { convertObjectToCss } from "@/utils/common/styles";
 import styled, { css } from "styled-components";
 
 export const Input = styled.input`
   ${({ theme }) => css`
     background: ${theme.color.white};
-    border: 1px solid ${theme.color.gray[200]};
-    height: 44px;
+    border: 1px solid ${theme.color.gray[300]};
+    height: 56px;
     width: 100%;
     padding: 0 16px;
-    font-size: ${theme.typography.body1.fontSize};
-    font-weight: ${theme.typography.body1.fontWeight};
-    line-height: ${theme.typography.body1.lineHeight};
-
     border-radius: 8px;
+
+    ${convertObjectToCss(theme.typography.body1)};
+
     &::placeholder {
       color: ${theme.color.gray[400]};
     }

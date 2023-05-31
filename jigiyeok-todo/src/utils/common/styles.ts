@@ -1,4 +1,4 @@
-import { css } from "styled-components";
+import { CSSProperties, css } from "styled-components";
 export const ellipsisWithLine = (line = 1) => {
   if (line > 1) {
     return css`
@@ -18,4 +18,13 @@ export const ellipsisWithLine = (line = 1) => {
     text-overflow: ellipsis;
     word-break: break-all;
   `;
+};
+
+export const convertObjectToCss = (styleObject: CSSProperties) => {
+  return Object.entries(styleObject)
+    .map(
+      ([key, value]) =>
+        `${key.replace(/([A-Z])/g, "-$1").toLowerCase()}:${value}`
+    )
+    .join("; ");
 };

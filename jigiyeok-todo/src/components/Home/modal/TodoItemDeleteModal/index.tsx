@@ -2,12 +2,15 @@ import ModalTemplate from "@/components/common/ModalTemplate";
 import { Modal, ModalProps } from "@/recoil/modal/modal.type";
 import { DeleteModalSubText } from "./TodoItemDeleteModal.styles";
 
-type TodoItemDeleteModalProps = {};
+type TodoItemDeleteModalProps = {
+  onDelete: () => void;
+};
 
 const TodoItemDeleteModal: React.FC<ModalProps<TodoItemDeleteModalProps>> = ({
   onClose,
   state,
 }) => {
+  const { onDelete } = state;
   return (
     <ModalTemplate showDimmer>
       <ModalTemplate.Header>
@@ -17,10 +20,16 @@ const TodoItemDeleteModal: React.FC<ModalProps<TodoItemDeleteModalProps>> = ({
         <DeleteModalSubText>할 일을 삭제하시겠습니까?</DeleteModalSubText>
       </ModalTemplate.Content>
       <ModalTemplate.Footer>
-        <ModalTemplate.FooterButton variant="outlineGray">
+        <ModalTemplate.FooterButton onClick={onClose} variant="outlineGray">
           취소
         </ModalTemplate.FooterButton>
-        <ModalTemplate.FooterButton variant="fillRed">
+        <ModalTemplate.FooterButton
+          onClick={() => {
+            onDelete();
+            onClose();
+          }}
+          variant="fillRed"
+        >
           삭제
         </ModalTemplate.FooterButton>
       </ModalTemplate.Footer>

@@ -20,13 +20,15 @@ type TodoItemProps = {
   title: string;
   checked?: boolean;
   onChangeChecked?: ChangeEventHandler<HTMLInputElement>;
-  onDelete?: () => void;
+  onDelete: () => void;
+  onUpdate: (updateTodoText: string) => void;
 };
 const TodoItem = ({
   title,
   checked,
   onChangeChecked,
   onDelete,
+  onUpdate,
 }: TodoItemProps) => {
   const { registerEvent } = useSlider({
     width: 96,
@@ -35,12 +37,17 @@ const TodoItem = ({
   const { open } = useTodoModal();
   const openTodoEditModal = () => {
     open("todoItemEdit", {
-      state: {},
+      state: {
+        todoText: title,
+        onUpdate,
+      },
     });
   };
   const openTodoDeleteModal = () => {
     open("todoItemDelete", {
-      state: {},
+      state: {
+        onDelete,
+      },
     });
   };
 

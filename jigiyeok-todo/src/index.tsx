@@ -7,20 +7,25 @@ import { ThemeProvider } from "styled-components";
 import GlobalTheme from "@/theme";
 import GlobalStyles from "@/styles/GlobalStyles";
 import { RecoilRoot } from "recoil";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+const queryClient = new QueryClient();
 root.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <BrowserRouter>
-        <ThemeProvider theme={GlobalTheme}>
-          <GlobalStyles />
-          <App />
-        </ThemeProvider>
-      </BrowserRouter>
-    </RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <BrowserRouter>
+          <ThemeProvider theme={GlobalTheme}>
+            <GlobalStyles />
+            <App />
+          </ThemeProvider>
+        </BrowserRouter>
+      </RecoilRoot>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

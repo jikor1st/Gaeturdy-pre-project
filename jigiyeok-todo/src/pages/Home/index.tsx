@@ -140,6 +140,19 @@ const HomePage = () => {
                 onDelete={() => {
                   setTodoList((prev) => prev.filter((item) => item.id !== id));
                 }}
+                onUpdate={(updateTodoText) => {
+                  setTodoList((prev) =>
+                    prev.map((item) => {
+                      if (item.id === id) {
+                        return {
+                          ...item,
+                          title: updateTodoText,
+                        };
+                      }
+                      return item;
+                    })
+                  );
+                }}
                 key={id}
               />
             ))}

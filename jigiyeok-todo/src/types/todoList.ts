@@ -3,4 +3,5 @@ export type TodoItemType = {
   title: string;
   checked: boolean;
   createdAt: string;
+  updatedAt?: string;
 };

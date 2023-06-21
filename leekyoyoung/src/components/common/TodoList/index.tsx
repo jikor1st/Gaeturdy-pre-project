@@ -2,12 +2,17 @@ import styled, {css} from "styled-components";
 
 interface TodoListProps {
     children: React.ReactNode;
-    title: string;
 }
-const TodoList = ({ children, title }: TodoListProps) => {
+
+const TodoList = ({ children }: TodoListProps) => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1;
+    const day = currentDate.getDate();
+
     return (
     <TodoWrapper>
-        <Title>{title}</Title>
+        <Title>{year}년 {month}월 {day}일</Title>
         {children}
     </TodoWrapper>
     )

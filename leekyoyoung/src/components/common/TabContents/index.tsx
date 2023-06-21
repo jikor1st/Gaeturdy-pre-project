@@ -20,10 +20,8 @@ const TabContents = (props:MyProps) => {
     const [modalOpenId, setModalOpenId] = useState<string>("");
     const [editModalOpenId, setEditModalOpenId] = useState<string>("");
     const [checked] = useState<boolean>(false);
-    // const [downPosX, setdownPosX] = useState(0);
     const downPosX = useRef(0);
     const movePosX = useRef(0);
-    // const [movePosX, setmovePosX] = useState(0);
     const [listItems, setListItems] = useState<ListItem[]>(() => {
         const saved: ListItem[] | null = localStorageController.getItem('todolist');
         if (saved !== null) {
@@ -101,13 +99,6 @@ const TabContents = (props:MyProps) => {
         );
     }
 
-    // const slideItem = (e : React.DragEvent<HTMLLabelElement>) => {
-    //     const id = (e.target as HTMLLabelElement).id;
-    //     e.dataTransfer.setData("text/plain", id);
-    //     const target = e.currentTarget;
-
-    // }
-
     const handleDelModalShow = (id: string) => {
         setModalOpenId(id);
     };
@@ -144,15 +135,13 @@ const TabContents = (props:MyProps) => {
             </t.InputWrapper>
             <t.ContentsWrapper>
                 {listItems.map((item) => (
-                    <t.TodoItem  key={item.id}>
+                    <t.TodoItem key={item.id}>
                         <label
                             onPointerDown={(e)=> {
                                 setDown(true); 
+                                e.preventDefault();
                                 downPosX.current = e.clientX - movePosX.current
                                 const target = e.currentTarget;
-                                if(movePosX.current = -95) {
-                                    console.log('1')
-                                }
                                 target.style.transition = 'none';
                             }}
                             onPointerMove={(e)=> {
@@ -176,7 +165,7 @@ const TabContents = (props:MyProps) => {
                                 } else {
                                     movePosX.current = 0;
                                 }
-                                target.style.transition = 'ease-in .4s transform'
+                                target.style.transition = 'ease-in .2s transform'
                                 target.style.transform  =`translateX(${movePosX.current}px)`
                             }}
                         >

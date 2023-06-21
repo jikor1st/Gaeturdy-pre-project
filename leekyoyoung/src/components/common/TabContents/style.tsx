@@ -66,6 +66,7 @@ export const DelButton = styled.button`
 export const ContentsWrapper = styled.ul ` 
     margin-top: 32px;
     margin-right: -16px;
+    overflow: hidden;
 
     `
 export const TodoItem = styled.li` 

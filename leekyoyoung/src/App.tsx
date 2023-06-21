@@ -1,27 +1,17 @@
-import React from 'react';
-import './App.css';
-import GlobalStyle from '@/styles/global-styles';
-import { ThemeProvider } from 'styled-components';
-import { theme } from '@/styles/theme'
-import TodoList from '@/components/common/TodoList';
-import TabMenu from '@/components/common/TabMenu';
-import TabContents from '@/components/common/TabContents';
+import {Route, Routes} from "react-router-dom"
+import Homepage from "./pages/Homepage";
+import PlaygroundPage from "./pages/Playground";
+import TestPage from "./pages/Playground/playtest";
+import LoginTab from "./pages/Login";
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <TodoList 
-        title="2023년 4월 18일"
-      >
-        <TabMenu />
-        <TabContents 
-          placeholder = "할 일을 추가해주세요"
-          btntxt = "추가"
-        />
-      </TodoList>
-      {""}
-    </ThemeProvider>
+    <Routes>
+      <Route path="/" element={<Homepage />} />
+      <Route path="/playground" element={<PlaygroundPage />} />
+      <Route path="/testpage" element={<TestPage />} />
+      <Route path="/login" element={<LoginTab />} />
+    </Routes>
   );
 }
 

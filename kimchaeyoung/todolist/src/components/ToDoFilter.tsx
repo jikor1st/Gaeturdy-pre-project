@@ -13,9 +13,12 @@ const ToDoFilterList = styled.ul`
     border-bottom: 1px solid ${theme.colors.gray200};
     li {
         color: ${theme.colors.gray400};
-        font-size: ${theme.fontSize.body2};
+        font-size: ${theme.font.body1.fontSize};
+        line-height: ${theme.font.body1.lineHeight};
+        font-weight: ${theme.font.body1.fontWeight};
         cursor: pointer;
         &.active {
+            font-weight: 600;
             color: ${theme.colors.primary};
             position: relative;
             padding-bottom: 4px;
@@ -33,22 +36,27 @@ const ToDoFilterList = styled.ul`
     }
 `;
 
-interface Props {
+interface TodoFlterProps {
     filter: FilterType[];
     activeFilter: string;
     todo: ToDoType[];
     setActiveFilter: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function ToDoFilter({ filter, activeFilter, todo, setActiveFilter }: Props) {
+function ToDoFilter({
+    filter,
+    activeFilter,
+    todo,
+    setActiveFilter,
+}: TodoFlterProps) {
     const todoLength = (id: string) => {
         switch (id) {
             case "all":
                 return todo.length;
             case "active":
-                return todo.filter((item: any) => !item.done).length;
+                return todo.filter((item: ToDoType) => !item.done).length;
             case "complete":
-                return todo.filter((item: any) => item.done).length;
+                return todo.filter((item: ToDoType) => item.done).length;
         }
     };
 

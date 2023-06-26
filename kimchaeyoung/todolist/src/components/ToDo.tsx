@@ -3,6 +3,7 @@ import check from "@/icon/icon-checkbox.svg";
 import checkBlue from "@/icon/icon-checkbox-blue.svg";
 import checkDefault from "@/icon/icon-checkbox-default.svg";
 import iconDeleteRed from "@/icon/icon-delete-red.svg";
+import iconDate from "@/icon/icon-date.svg";
 import theme from "@/style/theme";
 import { ToDoType } from "@/App";
 
@@ -39,7 +40,7 @@ const ToDoList = styled.ul`
         height: 1.25rem;
         opacity: 0;
         &:checked ~ .label {
-            color: ${theme.colors.gray400};
+            color: ${theme.colors.gray900};
             &::before {
                 background-image: ${(props) =>
                     props.color === theme.colors.primary
@@ -51,13 +52,16 @@ const ToDoList = styled.ul`
     .label {
         padding-left: 44px;
         position: relative;
-        color: ${theme.colors.gray800};
-        font-size: ${theme.fontSize.body1};
-        line-height: 32px;
+        color: ${theme.colors.gray500};
+        font-size: ${theme.font.subTitle2.fontSize};
+        line-height: ${theme.font.subTitle2.lineHeight};
+        font-weight: ${theme.font.subTitle2.fontWeight};
+        min-height: 32px;
         max-width: 376px;
-        overflow: hidden;
+        overflow-x: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        margin: 0;
         &::before {
             content: "";
             display: inline-block;
@@ -67,6 +71,29 @@ const ToDoList = styled.ul`
             top: 0;
             left: 0;
             background-image: url(${checkDefault});
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    }
+    .create-date {
+        display: block;
+        color: ${theme.colors.gray300};
+        font-size: ${theme.font.caption1.fontSize};
+        line-height: ${theme.font.caption1.lineHeight};
+        font-weight: ${theme.font.caption1.fontWeight};
+        padding-left: 20px;
+        position: relative;
+        margin: 0;
+        &::before {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-image: url(${iconDate});
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;
@@ -94,6 +121,7 @@ interface Props {
     filteredTodo: ToDoType[];
     todo: ToDoType[];
     setTodo: React.Dispatch<React.SetStateAction<ToDoType[]>>;
+    toggleModal: () => void;
 }
 
 function ToDo({
@@ -101,6 +129,7 @@ function ToDo({
     filteredTodo,
     todo,
     setTodo,
+    toggleModal,
 }: Props): React.ReactElement {
     const toggleDone = (e: any) => {
         const afterCheck = todo.map((item) =>
@@ -115,8 +144,12 @@ function ToDo({
         const afterDelete = todo.filter((el) => el.id !== id);
         setTodo(afterDelete);
     };
+    const editTodo = (id: number) => {
+        const afterDelete = todo.filter((el) => el.id !== id);
+        setTodo(afterDelete);
+    };
     return (
-        <ToDoList>
+        <ToDoList color={color}>
             {filteredTodo &&
                 filteredTodo.map((item: any) => (
                     <li key={item.id}>
@@ -129,10 +162,18 @@ function ToDo({
                                 checked={item.done}
                                 onChange={(e) => toggleDone(e)}
                             />
-                            <span className="label">{item.name}</span>
+                            <p className="label">
+                                {item.name}
+                                {item.create && (
+                                    <span className="create-date">
+                                        {item.create}
+                                    </span>
+                                )}
+                            </p>
+                            <i className="delete" onClick={toggleModal}></i>
                             <i
-                                className="delete"
-                                onClick={() => deleteTodo(item.id)}
+                                className="edit"
+                                onClick={() => editTodo(item.id)}
                             ></i>
                         </label>
                     </li>

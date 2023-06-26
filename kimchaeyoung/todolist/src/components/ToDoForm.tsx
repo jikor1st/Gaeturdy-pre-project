@@ -2,6 +2,8 @@ import theme from "@/style/theme";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ToDoType } from "@/App";
+import ToDoButton from "./ToDoButton";
+import dayjs from "dayjs";
 
 const FormContainer = styled.div`
     display: flex;
@@ -20,18 +22,6 @@ const Input = styled.input`
     }
 `;
 
-const Button = styled.button`
-    background-color: ${(props) => props.color};
-    color: ${(props) =>
-        props.color === theme.colors.primary ? theme.colors.white : "black"};
-    border: none;
-    border-radius: 8px;
-    padding: 14px 15px;
-    font-size: ${theme.fontSize.button1};
-    font-weight: 600;
-    cursor: pointer;
-`;
-
 interface Props {
     placeholder: string;
     color: string;
@@ -44,18 +34,28 @@ function ToDoForm({ placeholder, color, todo, setTodo }: Props) {
 
     const onSubmit = () => {
         setTodo([
-            { id: todo.length + 1, name: inputValue, done: false },
+            {
+                id: todo.length + 1,
+                name: inputValue,
+                done: false,
+                create: dayjs().format("YYYY.MM.DD HH:MM"),
+            },
             ...todo,
         ]);
         localStorage.setItem(
             "todo",
-            JSON.stringify({ name: todo, done: false })
+            JSON.stringify({
+                name: todo,
+                done: false,
+                create: dayjs().format("YYYY.MM.DD HH:MM"),
+            })
         );
         setInputValue("");
     };
 
     useEffect(() => {
         localStorage.setItem("todo", JSON.stringify(todo));
+        console.log(todo);
     }, [todo]);
 
     return (
@@ -67,9 +67,12 @@ function ToDoForm({ placeholder, color, todo, setTodo }: Props) {
                     setInputValue(e.target.value);
                 }}
             />
-            <Button color={color} onClick={onSubmit}>
-                추가
-            </Button>
+            <ToDoButton
+                color={color}
+                title="추가"
+                size="large"
+                onSubmit={onSubmit}
+            />
         </FormContainer>
     );
 }

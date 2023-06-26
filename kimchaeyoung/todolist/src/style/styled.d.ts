@@ -1,10 +1,10 @@
 import "styled-components";
-import { ColorsTypes, FontSizeTypes } from "./theme";
+import { ColorsTypes, FontTypes } from "./theme";
 
 declare module "styled-components" {
     export interface DefaultTheme {
         colors: ColorsTypes;
-        fontSize: FontSizeTypes;
+        font: FontTypes;
     }
 }
 
